@@ -15,10 +15,10 @@ export class Conta {
   @JoinColumn()
   fornecedor: Fornecedor;
 
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "created_at"})
   createdAt: Date;
    
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "updated_at"})
   updatedAt: Date;
 
 }

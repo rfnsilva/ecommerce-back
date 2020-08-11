@@ -72,11 +72,21 @@ export const login = async (req: Request, res: Response) => {
 export const add_cart = async(req: Request, res: Response) => {
     try {
   
-      const { userId, produtoId } = req.body;
+        const { user_id, produto_id } = req.body;
+
+        const aux = await getRepository(User).query(`
+            select * from "user_produtos_produto" where user_id='${user_id}'
+        `);
+
+        for (let i = 0; i < aux.length; i++){
+            if ((user_id === aux[i].user_id) && (produto_id === aux[i].produto_id)) {
+                return res.status(201).json({ message: 'produto ja no carrinho' })
+            }
+        }
   
-      const add_produto_cart = await getRepository(User).query(`
-        INSERT INTO "user_produtos_produto"("userId", "produtoId") VALUES ('${userId}', '${produtoId}')  RETURNING "userId", "produtoId"
-      `);
+        const add_produto_cart = await getRepository(User).query(`
+            INSERT INTO "user_produtos_produto"("user_id", "produto_id") VALUES ('${user_id}', '${produto_id}')  RETURNING "user_id", "produto_id"
+        `);
   
       return res.json(add_produto_cart);
     } catch (error) {
@@ -100,5 +110,29 @@ export const get_user = async(req: Request, res: Response) => {
         return res.json(user);
     } catch (error) {
         return res.status(404).json({ message: 'erro ao pegar user' })
+    }
+}
+
+
+//delete um cart
+export const delete_cart = async(req: Request, res: Response) => {
+    const user_id  = req.params.user_id;
+    const produto_id = req.params.produto_id;
+
+    try {
+        await getRepository(User).query(`
+            delete from user_produtos_produto WHERE "user_id"='${user_id}' and "produto_id"='${produto_id}';
+        `);
+
+        const user = await getRepository(User).findOne({
+            where: {
+                id: user_id
+            },
+            relations: ['produtos']
+        });
+
+        return res.json(user);
+    } catch (error) {
+        return res.status(404).json({ message: 'erro ao deletar' })
     }
 }

@@ -9,14 +9,14 @@ export class Produto {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column("varchar")
+  @Column("varchar", {unique: true})
   nome: string;
 
   @Column("varchar")
   descricao: string;
 
-  @Column("boolean", {nullable: true})
-  destaque: boolean;
+  @Column("varchar", {nullable: true})
+  destaque: string;
 
   @Column("integer")
   valor: number;
@@ -30,10 +30,10 @@ export class Produto {
   @ManyToOne(type => Fornecedor, Fornecedor => Fornecedor.produtos, {nullable:true})
   fornecedor: Fornecedor;
  
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "created_at"})
   createdAt: Date;
   
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "updated_at"})
   updatedAt: Date;
 
 }

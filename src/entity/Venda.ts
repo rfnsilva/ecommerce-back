@@ -15,6 +15,9 @@ export class Venda {
   @Column("varchar")
   id_cliente: string;
 
+  @Column("varchar")
+  nome_produto: string;
+
   @Column("integer",{nullable: true})
   valor: number;
  

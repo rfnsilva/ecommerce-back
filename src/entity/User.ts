@@ -10,20 +10,20 @@ export class User {
   @Column("varchar", {nullable: true})
   nome: string;
 
-  @Column("varchar")
+  @Column("varchar", {unique: true})
   email: string;
 
   @Column("varchar")
   senha: string;
 
   @ManyToMany(type => Produto)
-  @JoinTable()
+  @JoinTable({name: 'user_produtos_produto', joinColumn: {name: "user_id"}, inverseJoinColumn: {name: "produto_id"}})
   produtos: Produto[];
  
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "created_at"})
   createdAt: Date;
   
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "updated_at"})
   updatedAt: Date;
 
 }

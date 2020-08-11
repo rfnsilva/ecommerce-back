@@ -8,7 +8,7 @@ export const get_produtos_destaque = async(req: Request, res: Response) => {
 
     const produtos_destaques = await getRepository(Produto).find({
       where: {
-        destaque: true
+        destaque: 'sim'
       }
     });
 

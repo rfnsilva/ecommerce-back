@@ -1,8 +1,9 @@
 import { Router, Request, Response } from 'express';
 
-import { register, login, add_cart, get_user } from './controllers/UserController';
+import { register, login, add_cart, get_user, delete_cart } from './controllers/UserController';
 import { get_produtos_destaque } from './controllers/ProdutoController';
 import { get_marcas, get_marca } from './controllers/MarcaController';
+import { login_admin, register_admin } from './controllers/AdminController';
 import { get_vendas, get_top_vendas, get_qtd_vendas, add_vendas_admin_cliente, add_vendas_admin, del_venda, edit_venda } from './controllers/AdminVendaController';
 import { get_marcas_admin, get_marca_id, add_marca_admin, del_marca, edit_marca } from './controllers/AdminMarcaController';
 import { get_fornecedor_id, get_fornecedores, add_fornecedor, del_fornecedor, edit_fornecedor } from './controllers/AdminFornecedorController';
@@ -23,6 +24,8 @@ routes.get('/', (request: Request, response: Response) => {
 //autênticação
 routes.post('/register', register); //feito
 routes.post('/login', login); //feito
+routes.post('/login_admin', login_admin); //feito
+routes.post('/register_admin', register_admin); //feito
 
 //home page
 routes.get('/get_produtos_destaque', get_produtos_destaque); //feito
@@ -30,12 +33,13 @@ routes.get('/get_marcas', get_marcas); //feito
 routes.get('/get_user/:id', get_user); //feito
 routes.get('/get_marca/:id', get_marca); //feito
 
-routes.post('/add_cart', add_cart); //feito
 
 //middleware autenticacao
 routes.use(auth); //feito
 
+routes.post('/add_cart', add_cart); //feito
 routes.get('/get_user/:id', get_user); //feito
+routes.delete('/delete_cart/:user_id/:produto_id', delete_cart); //feito
 
 //FORNECEDORES
 routes.get('/get_fornecedores', get_fornecedores); //feito
@@ -72,7 +76,7 @@ routes.post('/add_vendas_admin_cliente/:id', add_vendas_admin_cliente); //feito
 routes.delete('/del_venda/:id', del_venda); //feito
 routes.put('/edit_venda/:id', edit_venda); //feito
 routes.get('/get_qtd_vendas', get_qtd_vendas); //feito
-routes.get('/get_top_vendas', get_top_vendas); //
+routes.get('/get_top_vendas', get_top_vendas); //feito
 
 
 export default routes;

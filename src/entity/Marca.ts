@@ -7,16 +7,16 @@ export class Marca {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column("varchar")
+  @Column("varchar", {unique: true})
   nome: string;
 
   @OneToMany(type => Produto, produto => produto.marca, {onDelete: 'CASCADE'})
   produtos: Produto[];
  
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "created_at"})
   createdAt: Date;
   
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({type: "timestamp", name: "updated_at"})
   updatedAt: Date;
 
 }

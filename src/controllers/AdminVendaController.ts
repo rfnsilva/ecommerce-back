@@ -1,41 +1,42 @@
 import { getRepository } from 'typeorm';
 import { Request, Response } from 'express';
 import { Venda } from '../entity/Venda';
+import { Produto } from '../entity/Produto';
+
 
 //add venda no banco pelo sistema
 export const add_vendas_admin = async(req: Request, res: Response) => {
-  const { id_cliente, id_produto } = req.body;
+  const { id_cliente, id_produto, valor, nome_produto } = req.body;
 
   try {
-      const venda = await getRepository(Venda).query(`
-          INSERT INTO "venda"("id_cliente", "id_produto") VALUES ('${id_cliente}', '${id_produto}')  RETURNING "id", "id_cliente", "id_produto", "createdAt"
-      `);
-      console.log(venda)
+        await getRepository(Venda).query(`
+            INSERT INTO "venda"("id_cliente", "id_produto", "valor", "nome_produto") VALUES ('${id_cliente}', '${id_produto}', '${valor}', '${nome_produto}')  RETURNING "id", "id_cliente", "id_produto", "valor", "nome_produto", "created_at"
+        `);
       
-      const vendas = await getRepository(Venda).find();
+        await getRepository(Produto).query(`
+            delete from produto where "id"=${id_produto};
+        `);
+        const vendas = await getRepository(Venda).find();
 
-      return res.json(vendas);
-  } catch (error) {
-      return res.status(404).json({ message: 'erro ao add' })
-  }
+        return res.json(vendas);
+    } catch (error) {
+        return res.status(404).json({ message: 'erro ao add' })
+    }
 }
 
 export const add_vendas_admin_cliente = async(req: Request, res: Response) => {
     const id = req.params.id;
     let produtos = req.body;
-
-    for (let i = 0; i < produtos.length; i++) { 
-        console.log(produtos[i].valor)
-    }
     
     try {
         for (let i = 0; i < produtos.length; i++) {
             await getRepository(Venda).query(`
-                INSERT INTO "venda"("id_cliente", "id_produto", "valor") VALUES ('${id}', '${produtos[i].id}', '${produtos[i].valor}')  RETURNING "id", "id_cliente", "id_produto", "valor", "createdAt"
+                INSERT INTO "venda"("id_cliente", "id_produto", "valor", "nome_produto") VALUES ('${id}', '${produtos[i].id}', '${produtos[i].valor}', '${produtos[i].nome}')  RETURNING "id", "id_cliente", "id_produto", "valor", "nome_produto", "created_at"
             `);
         }
+        return res.status(201).json({ message: 'produto adicionado com sucesso' });
     } catch (error) {
-        return res.status(404).json({ message: 'erro ao add' })
+        return res.status(404).json({ message: 'erro ao add' });
     }
 }
 
@@ -46,7 +47,7 @@ export const get_vendas = async(req: Request, res: Response) => {
       
       return res.json(vendas);
   } catch (error) {
-      return res.status(404).json({ message: 'erro ao peagr todas as vendas' })
+      return res.status(404).json({ message: 'erro ao pegar todas as vendas' })
   }
 }
 
