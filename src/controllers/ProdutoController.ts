@@ -25,7 +25,7 @@ export const add_produto = async(req: Request, res: Response) => {
     const { nome, descricao, destaque, valor, marcaId } = req.body;
 
     const produto_adicionado = await getRepository(Produto).query(`
-      INSERT INTO "produto"("nome", "descricao", "destaque", "valor", "marcaId") VALUES ('${nome}', '${descricao}', '${destaque}', '${valor}', '${marcaId}')  RETURNING "id", "nome", "descricao", "destaque", "valor", "marcaId", "createdAt", "updatedAt"
+      INSERT INTO "produto"("nome", "descricao", "destaque", "valor", "marcaId") VALUES ('${nome}', '${descricao}', '${destaque}', '${valor}', '${marcaId}')  RETURNING "id", "nome", "descricao", "destaque", "valor", "marcaId", "created_at", "updated_at"
     `);
 
     return res.json(produto_adicionado);

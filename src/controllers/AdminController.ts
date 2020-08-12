@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import { Admin } from "../entity/Admin";
+import { Slider } from "../entity/Slider";
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 

@@ -9,14 +9,14 @@ export const add_fornecedor = async(req: Request, res: Response) => {
 
     try {
         const fornecedor = await getRepository(Fornecedor).query(`
-            INSERT INTO "fornecedor"("nome") VALUES ('${nome}')  RETURNING "id", "nome", "createdAt", "updatedAt"
+            INSERT INTO "fornecedor"("nome") VALUES ('${nome}')  RETURNING "id", "nome", "created_at", "updated_at"
         `);
 
         let v: number = 0;
         let f: string = fornecedor[0].id;
 
         await getRepository(Conta).query(`
-            INSERT INTO "conta"("valor", "fornecedorId") VALUES ('${v}', '${f}')  RETURNING "id", "valor", "fornecedorId", "createdAt", "updatedAt"
+            INSERT INTO "conta"("valor", "fornecedorId") VALUES ('${v}', '${f}')  RETURNING "id", "valor", "fornecedorId", "created_at", "updated_at"
         `);
         
         const fornecedores = await getRepository(Fornecedor).find({

@@ -9,7 +9,7 @@ export const add_marca_admin = async(req: Request, res: Response) => {
 
     try {
         await getRepository(Marca).query(`
-            INSERT INTO "marca"("nome") VALUES ('${nome}')  RETURNING "id", "nome", "createdAt", "updatedAt"
+            INSERT INTO "marca"("nome") VALUES ('${nome}')  RETURNING "id", "nome", "created_at", "updated_at"
         `);
 
         const marcas = await getRepository(Marca).find({
